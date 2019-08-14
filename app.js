@@ -5,6 +5,7 @@ const logger = require('morgan');
 const flash = require('connect-flash');
 
 const connect = require('./schemas/index');
+const indexRouter = require('./routes/index');
 
 const app = express();
 connect();
@@ -17,7 +18,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: false }));
 app.use(flash());
 
-
+app.use('/', indexRouter);
 
 app.use(function (req, res, next) {
     next(createError(404));
