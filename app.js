@@ -5,7 +5,8 @@ const logger = require('morgan');
 const flash = require('connect-flash');
 
 const connect = require('./schemas/index');
-const indexRouter = require('./routes/index');
+const foodRouter = require('./routes/food');
+const noticeRouter = require('./routes/notice');
 
 const app = express();
 connect();
@@ -18,7 +19,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: false }));
 app.use(flash());
 
-app.use('/', indexRouter);
+app.use('/food', foodRouter);
+app.use('/notice', noticeRouter);
 
 app.use(function (req, res, next) {
     next(createError(404));
