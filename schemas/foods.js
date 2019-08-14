@@ -20,7 +20,7 @@ const food = new Schema({
     memo: String,
 }, {
         timestamps: {
-            createdAt: 'created_at',
+            createdAt: 'createdAt',
         }
     })
 
