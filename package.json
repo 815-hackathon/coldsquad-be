@@ -1,0 +1,27 @@
+{
+  "name": "coldsquad-be",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/815-hackathon/coldsquad-be.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/815-hackathon/coldsquad-be/issues"
+  },
+  "homepage": "https://github.com/815-hackathon/coldsquad-be#readme",
+  "dependencies": {
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "http-errors": "^1.7.3",
+    "mongoose": "^5.6.9",
+    "morgan": "^1.9.1"
+  }
+}
