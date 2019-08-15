@@ -2,21 +2,14 @@ const express = require('express');
 const router = express.Router();
 
 const Refrigerator = require('../schemas/foods');
+const { getResponseData, getResponseListData } = require('./util');
 
 // home : 모든 음식 리스트를 확인
 // 보내야할 것: name, owner, createdAt, expireDate, storeDuration(storeDate), isExpire(expireDate), isStore, category, location, memo
 router.get('/all', async (req, res, next) => {
     try {
         const foods = await Refrigerator.find();
-        const today = new Date().getDate();
-        const addedFoods = [];
-        foods.forEach((food) => {
-            const { _id, name, owner, createdAt, expireDate, storeDate, category, location, memo } = food;
-            const storeDuration = storeDate.getDate() - today;
-            const isExpire = (food.expireDate.getDate() - today) >= 0 ? true : false;
-            const isStore = storeDuration >= 0 ? true : false;
-            addedFoods.push({ _id, name, owner, createdAt, expireDate, storeDuration, category, location, memo, isExpire, isStore })
-        })
+        const addedFoods = getResponseListData(foods);
         console.log(addedFoods);
         res.json(addedFoods);
     } catch (err) {
@@ -28,13 +21,9 @@ router.get('/all', async (req, res, next) => {
 // 하나의 음식정보를 확인
 router.get('/:id', async (req, res, next) => {
     try {
-        const id = req.params.id
-        const { _id, name, owner, createdAt, expireDate, storeDate, category, location, memo } = await Refrigerator.findById(id);
-        const today = new Date().getDate();
-        const storeDuration = storeDate.getDate() - today;
-        const isExpire = (expireDate.getDate() - today) >= 0 ? true : false;
-        const isStore = storeDuration >= 0 ? true : false;
-        const addedFood = { _id, name, owner, createdAt, expireDate, storeDuration, category, location, memo, isExpire, isStore };
+        const id = req.params.id;
+        const food = await Refrigerator.findById(id);
+        const addedFood = getResponseData(food);
         console.log(addedFood)
         res.json(addedFood);
     } catch (err) {
@@ -47,15 +36,7 @@ router.get('/:id', async (req, res, next) => {
 router.get('/category/:value', async (req, res, next) => {
     try {
         const foods = await Refrigerator.find({ category: req.params.value });
-        const today = new Date().getDate();
-        const addedFoods = [];
-        foods.forEach((food) => {
-            const { _id, name, owner, createdAt, expireDate, storeDate, category, location, memo } = food;
-            const storeDuration = storeDate.getDate() - today;
-            const isExpire = (food.expireDate.getDate() - today) >= 0 ? true : false;
-            const isStore = storeDuration >= 0 ? true : false;
-            addedFoods.push({ _id, name, owner, createdAt, expireDate, storeDuration, category, location, memo, isExpire, isStore })
-        })
+        const addedFoods = getResponseListData(foods);
         console.log('category', addedFoods)
         res.json(foods);
     } catch (err) {
@@ -75,17 +56,9 @@ router.post('/', async (req, res, next) => {
         newFood.save();
 
         const foods = await Refrigerator.find();
-        const today = new Date().getDate();
-        const addedFoods = [];
-        foods.forEach((food) => {
-            const { _id, name, owner, createdAt, expireDate, storeDate, category, location, memo } = food;
-            const storeDuration = storeDate.getDate() - today;
-            const isExpire = (food.expireDate.getDate() - today) >= 0 ? true : false;
-            const isStore = storeDuration >= 0 ? true : false;
-            addedFoods.push({ _id, name, owner, createdAt, expireDate, storeDuration, category, location, memo, isExpire, isStore })
-        })
+        const addedFoods = getResponseListData(foods);
 
-        console.log(addedFoods);
+        console.log('create', addedFoods);
         res.json(addedFoods);
     } catch (err) {
         console.log(err);
@@ -100,17 +73,10 @@ router.delete('/:id', async (req, res, next) => {
         await Refrigerator.findByIdAndDelete(id);
 
         const foods = await Refrigerator.find();
-        const today = new Date().getDate();
-        const addedFoods = [];
-        foods.forEach((food) => {
-            const { _id, name, owner, createdAt, expireDate, storeDate, category, location, memo } = food;
-            const storeDuration = storeDate.getDate() - today;
-            const isExpire = (food.expireDate.getDate() - today) >= 0 ? true : false;
-            const isStore = storeDuration >= 0 ? true : false;
-            addedFoods.push({ _id, name, owner, createdAt, expireDate, storeDuration, category, location, memo, isExpire, isStore })
-        })
+        const addedFoods = getResponseListData(foods);
 
-        res.end('delete');
+        console.log('delete', addedFoods)
+        res.json(addedFoods);
     } catch (err) {
         console.log(err);
         next(err);

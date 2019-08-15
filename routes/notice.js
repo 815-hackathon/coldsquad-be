@@ -30,6 +30,9 @@ router.delete('/:id', async (req, res, next) => {
     try {
         const id = req.params.id;
         await Refrigerator.findByIdAndDelete(id);
+        const notices = await Notices.find();
+        console.log(notices);
+        res.json(notices);
         res.end('삭제');
     } catch (err) {
         console.log(err);
@@ -42,7 +45,9 @@ router.post('/', (req, res, next) => {
         const { name, content } = req.body;
         const newNotice = new Notices({ name, content });
         newNotice.save();
-        res.send('저장')
+        const notices = await Notices.find();
+        console.log(notices);
+        res.json(notices);
     } catch (err) {
         console.log(err);
         next(err);
