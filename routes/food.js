@@ -9,9 +9,9 @@ const { getResponseData, getResponseListData } = require('./util');
 router.get('/all', async (req, res, next) => {
     try {
         const foods = await Refrigerator.find();
-        // const addedFoods = getResponseListData(foods);
-        console.log(foods);
-        res.json(foods);
+        const addedFoods = getResponseListData(foods);
+        console.log(addedFoods);
+        res.json(addedFoods);
     } catch (err) {
         console.log(err);
         next(err);
