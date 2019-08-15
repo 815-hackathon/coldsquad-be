@@ -7,14 +7,15 @@ const Refrigerator = require('../schemas/foods');
 // 보내야할 것: name, owner, createdAt, expireDate, storeDuration(storeDate), isExpire(expireDate), isStore, category, location, memo
 router.get('/all', async (req, res, next) => {
     try {
-        let foods = await Refrigerator.find();
-        let today = new Date().getDate();
+        const foods = await Refrigerator.find();
+        const today = new Date().getDate();
         const addedFoods = [];
         foods.forEach((food) => {
-            const { name, owner, createdAt, expireDate, storeDate, category, location, memo } = food;
+            const { _id, name, owner, createdAt, expireDate, storeDate, category, location, memo } = food;
+            const storeDuration = storeDate.getDate() - today;
             const isExpire = (food.expireDate.getDate() - today) >= 0 ? true : false;
-            const isStore = food.storeDuration >= 0 ? true : false;
-            addedFoods.push({ name, owner, createdAt, expireDate, storeDuration: storeDate.getDate() - today, category, location, memo, isExpire, isStore })
+            const isStore = storeDuration >= 0 ? true : false;
+            addedFoods.push({ _id, name, owner, createdAt, expireDate, storeDuration, category, location, memo, isExpire, isStore })
         })
         console.log(addedFoods);
         res.json(addedFoods);
@@ -28,8 +29,14 @@ router.get('/all', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
     try {
         const id = req.params.id
-        const food = await Refrigerator.findById(id);
-        res.json(food);
+        const { _id, name, owner, createdAt, expireDate, storeDate, category, location, memo } = await Refrigerator.findById(id);
+        const today = new Date().getDate();
+        const storeDuration = storeDate.getDate() - today;
+        const isExpire = (expireDate.getDate() - today) >= 0 ? true : false;
+        const isStore = storeDuration >= 0 ? true : false;
+        const addedFood = { _id, name, owner, createdAt, expireDate, storeDuration, category, location, memo, isExpire, isStore };
+        console.log(addedFood)
+        res.json(addedFood);
     } catch (err) {
         console.log(err);
         next(err);
@@ -40,6 +47,16 @@ router.get('/:id', async (req, res, next) => {
 router.get('/category/:value', async (req, res, next) => {
     try {
         const foods = await Refrigerator.find({ category: req.params.value });
+        const today = new Date().getDate();
+        const addedFoods = [];
+        foods.forEach((food) => {
+            const { _id, name, owner, createdAt, expireDate, storeDate, category, location, memo } = food;
+            const storeDuration = storeDate.getDate() - today;
+            const isExpire = (food.expireDate.getDate() - today) >= 0 ? true : false;
+            const isStore = storeDuration >= 0 ? true : false;
+            addedFoods.push({ _id, name, owner, createdAt, expireDate, storeDuration, category, location, memo, isExpire, isStore })
+        })
+        console.log('category', addedFoods)
         res.json(foods);
     } catch (err) {
         console.log(err);
@@ -56,7 +73,20 @@ router.post('/', (req, res, next) => {
         const storeDate = newDate.setDate(newDate.getDate() + storeDuration);
         const newFood = new Refrigerator({ name, owner, expireDate, storeDate, category, location, memo })
         newFood.save();
-        res.send(newFood);
+
+        const foods = await Refrigerator.find();
+        const today = new Date().getDate();
+        const addedFoods = [];
+        foods.forEach((food) => {
+            const { _id, name, owner, createdAt, expireDate, storeDate, category, location, memo } = food;
+            const storeDuration = storeDate.getDate() - today;
+            const isExpire = (food.expireDate.getDate() - today) >= 0 ? true : false;
+            const isStore = storeDuration >= 0 ? true : false;
+            addedFoods.push({ _id, name, owner, createdAt, expireDate, storeDuration, category, location, memo, isExpire, isStore })
+        })
+
+        console.log(addedFoods);
+        res.json(addedFoods);
     } catch (err) {
         console.log(err);
         next(err);
@@ -68,22 +98,23 @@ router.delete('/:id', async (req, res, next) => {
     try {
         const id = req.params.id;
         await Refrigerator.findByIdAndDelete(id);
-        res.end('성공');
+
+        const foods = await Refrigerator.find();
+        const today = new Date().getDate();
+        const addedFoods = [];
+        foods.forEach((food) => {
+            const { _id, name, owner, createdAt, expireDate, storeDate, category, location, memo } = food;
+            const storeDuration = storeDate.getDate() - today;
+            const isExpire = (food.expireDate.getDate() - today) >= 0 ? true : false;
+            const isStore = storeDuration >= 0 ? true : false;
+            addedFoods.push({ _id, name, owner, createdAt, expireDate, storeDuration, category, location, memo, isExpire, isStore })
+        })
+
+        res.end('delete');
     } catch (err) {
         console.log(err);
         next(err);
     }
 })
 
-// router.get('/', async (req, res, next) => {
-//     const food = await Refrigerator.findOne({ _id: '5d5439a68b9c977830046c0d' });
-//     res.json(food);
-// })
-
-
-/*
-router.get('/', (req, res, next) => {
-
-})
-*/
 module.exports = router;

@@ -6,6 +6,7 @@ const Notices = require('../schemas/notice');
 router.get('/all', async (req, res, next) => {
     try {
         const notices = await Notices.find();
+        console.log(notices);
         res.json(notices);
     } catch (err) {
         console.log(err);
