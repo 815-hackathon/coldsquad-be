@@ -66,7 +66,7 @@ router.get('/category/:value', async (req, res, next) => {
 
 // 음식 추가
 // name, owner, expireDate, storeDate, category, location, memo
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
     try {
         const { name, owner, expireDate, storeDuration, category, location, memo } = req.body;
         const newDate = new Date();
