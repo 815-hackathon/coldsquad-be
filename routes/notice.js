@@ -40,7 +40,7 @@ router.delete('/:id', async (req, res, next) => {
     }
 })
 
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
     try {
         const { name, content } = req.body;
         const newNotice = new Notices({ name, content });
