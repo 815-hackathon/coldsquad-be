@@ -50,6 +50,7 @@ router.get('/category/:value', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     try {
         const { name, owner, expireDate, storeDuration, category, location, memo } = req.body;
+        console.log(req.body);
         const newDate = new Date();
         const storeDate = newDate.setDate(newDate.getDate() + storeDuration);
         const newFood = new Refrigerator({ name, owner, expireDate, storeDate, category, location, memo })
