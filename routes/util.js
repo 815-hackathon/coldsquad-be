@@ -6,6 +6,9 @@ exports.getResponseListData = (foods) => {
     foods.forEach((food) => {
         const { _id, name, owner, createdAt, expireDate, storeDate, category, location, memo } = food;
         const storeDuration = storeDate.getDate() - today;
+        console.log(storeDate.getDate());
+        console.log(today, 'todayyyyyyyyyyyyyyyyyyy');
+        console.log(storeDuration);
         let isExpire;
         if (expireDate) {
             isExpire = (expireDate.getDate() - today) >= 0 ? true : false;

@@ -10,7 +10,6 @@ router.get('/all', async (req, res, next) => {
     try {
         const foods = await Refrigerator.find();
         const addedFoods = getResponseListData(foods);
-        console.log(addedFoods);
         res.json(addedFoods);
     } catch (err) {
         console.log(err);
@@ -24,7 +23,6 @@ router.get('/:id', async (req, res, next) => {
         const id = req.params.id;
         const food = await Refrigerator.findById(id);
         const addedFood = getResponseData(food);
-        console.log(addedFood)
         res.json(addedFood);
     } catch (err) {
         console.log(err);
@@ -37,7 +35,6 @@ router.get('/category/:value', async (req, res, next) => {
     try {
         const foods = await Refrigerator.find({ category: req.params.value });
         const addedFoods = getResponseListData(foods);
-        console.log('category', addedFoods)
         res.json(foods);
     } catch (err) {
         console.log(err);
@@ -50,7 +47,7 @@ router.get('/category/:value', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     try {
         const { name, owner, expireDate, storeDuration, category, location, memo } = req.body;
-        console.log(req.body);
+        console.log(req.body, 'req.bodyyyyyyyyyyyyyyyyyyy');
         const newDate = new Date();
         const storeDate = newDate.setDate(newDate.getDate() + storeDuration);
         const newFood = new Refrigerator({ name, owner, expireDate, storeDate, category, location, memo })
@@ -58,8 +55,6 @@ router.post('/', async (req, res, next) => {
 
         const foods = await Refrigerator.find();
         const addedFoods = getResponseListData(foods);
-
-        console.log('create', addedFoods);
         res.json(addedFoods);
     } catch (err) {
         console.log(err);
@@ -75,8 +70,6 @@ router.delete('/:id', async (req, res, next) => {
 
         const foods = await Refrigerator.find();
         const addedFoods = getResponseListData(foods);
-
-        console.log('delete', addedFoods)
         res.json(addedFoods);
     } catch (err) {
         console.log(err);
