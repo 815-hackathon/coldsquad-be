@@ -1,40 +1,35 @@
-const connect = require('./schemas/index');
-connect();
-const refrigerator = require('./schemas/foods');
-const notice = require('./schemas/notice');
+const moment = require('moment');
 
-const newdate = new Date();
-newdate.setDate(newdate.getDate() + 7);
-const store = new Date();
-store.setDate(newdate.getDate() + 15);
+var t1 = moment('2019-08-16 23:00', 'YYYY-MM-DD HH:mm');
+// var tt = moment('2019-08-17', 'YYYY-MM-DD HH:mm');
+var tt = moment('2019-08-17', 'YYYY-MM-DD');
+// var t2 = moment();
+// const today = new Date();
+// var t3 = moment(today);
+// console.log(t1)
+// console.log(tt.date())
+// console.log(tt)
 
-let newFood = new refrigerator({ name: '코카코리', owner: '서커스', expireDate: newdate, storeDate: store, category: 'drink', location: '냉장고', memo: '마시지마' });
-newFood.save();
-// let newFood = new refrigerator({ name: 'cocacola', owner: 'circus4', expireDate: newdate, category: 'drink', location: '냉장고', memo: '마시지마' });
-// newFood.save((err, account) => {
-//     if (err) return console.error(err);
-// });
-let newNotice = new notice({ name: 'circus', content: '코카콜라 마시지마' });
-newNotice.save((err, account) => {
-    if (err) return console.error(err);
-});
+// console.log(t1);
+// console.log(t2);
+// console.log('////////////////////////////////////////////////////////////');
+// console.log(t1.format('YYYY-MM-DD HH:mm'));
+// console.log(t2.format('YYYY-MM-DD HH:mm'));
+// console.log('////////////////////////////////////////////////////////////');
+// console.log(moment.duration(t2.diff(t1)));
+// console.log(moment.duration(t1.diff(t2)));
+// console.log('////////////////////////////////////////////////////////////');
+// console.log(moment.duration(t1.diff(t2)).asDays());;
+// console.log(moment.duration(t2.diff(t1)).asDays());;
 
-// const test = async function () {
-//     const food = await refrigerator.findOne({ _id: '5d545c002026a366e82bdab8' });
-//     const aa = new Date();
-//     console.log(food.expireDate)
-//     console.log(food.expireDate.getDate())
-//     console.log(aa.getDate())
-//     console.log(food.expireDate.getDate() - aa.getDate())
-//     // console.log((food.expireDate.getTime() - food.createdAt.getTime()) / (1000 * 60 * 60 * 24))
-//     // console.log(food._id);
-//     // console.log(food.storeDate);
-//     // console.log(food.name);
-//     // console.log(food.owner);
-//     // console.log(food.expireDate);
-//     // console.log(food.category);
-//     // console.log(food.location);
-//     // console.log(food.memo);
-//     console.log(food.createdAt);
-// }
-// test();
+console.log(Math.floor(moment.duration(t1.diff(moment().format('YYYY MM DD'), 'days')).asDays()));;
+console.log(moment.duration(t1.diff(moment().format('YYYY MM DD'), 'days')).asDays());;
+console.log('////////////////////////////////////////////////////////////');
+console.log(Math.floor(moment.duration(tt.diff(moment().format('YYYY MM DD'), 'days')).asDays()));;
+console.log(moment.duration(tt.diff(moment().format('YYYY MM DD'), 'days')).asDays());;
+// console.log(t1.diff(today));;
+console.log(t1.diff(moment().format('YYYY MM DD'), 'days'));
+console.log(tt.diff(moment().format('YYYY MM DD'), 'days'));
+// console.log(moment().format('YYYY MM DD'));
+// console.log()
+// console.log()

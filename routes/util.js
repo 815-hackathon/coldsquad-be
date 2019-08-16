@@ -1,17 +1,13 @@
-const Refrigerator = require('../schemas/foods');
+const moment = require('moment');
 
 exports.getResponseListData = (foods) => {
-    const today = new Date().getDate();
     const addedFoods = [];
     foods.forEach((food) => {
         const { _id, name, owner, createdAt, expireDate, storeDate, category, location, memo } = food;
-        const storeDuration = storeDate.getDate() - today;
-        console.log(storeDate.getDate());
-        console.log(today, 'todayyyyyyyyyyyyyyyyyyy');
-        console.log(storeDuration);
-        let isExpire;
+        const storeDuration = storeDate.diff(moment().format('YYYY MM DD'), 'days');
+        let isExpire = true;
         if (expireDate) {
-            isExpire = (expireDate.getDate() - today) >= 0 ? true : false;
+            isExpire = expireDate.diff(moment().format('YYYY MM DD'), 'days') >= 0 ? true : false;
         }
         const isStore = storeDuration >= 0 ? true : false;
         addedFoods.push({ _id, name, owner, createdAt, expireDate, storeDuration, category, location, memo, isExpire, isStore })
@@ -21,11 +17,10 @@ exports.getResponseListData = (foods) => {
 
 exports.getResponseData = (food) => {
     const { _id, name, owner, createdAt, expireDate, storeDate, category, location, memo } = food;
-    const today = new Date().getDate();
-    const storeDuration = storeDate.getDate() - today;
+    const storeDuration = storeDate.diff(moment().format('YYYY MM DD'), 'days');
     let isExpire;
     if (expireDate) {
-        isExpire = (expireDate.getDate() - today) >= 0 ? true : false;
+        isExpire = expireDate.diff(moment().format('YYYY MM DD'), 'days') >= 0 ? true : false;
     }
     const isStore = storeDuration >= 0 ? true : false;
     const addedFood = { _id, name, owner, createdAt, expireDate, storeDuration, category, location, memo, isExpire, isStore };

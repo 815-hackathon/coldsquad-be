@@ -35,7 +35,7 @@ router.get('/category/:value', async (req, res, next) => {
     try {
         const foods = await Refrigerator.find({ category: req.params.value });
         const addedFoods = getResponseListData(foods);
-        res.json(foods);
+        res.json(addedFoods);
     } catch (err) {
         console.log(err);
         next(err);
@@ -47,11 +47,10 @@ router.get('/category/:value', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
     try {
         const { name, owner, expireDate, storeDuration, category, location, memo } = req.body;
-        console.log(req.body, 'req.bodyyyyyyyyyyyyyyyyyyy');
         const newDate = new Date();
         const storeDate = newDate.setDate(newDate.getDate() + storeDuration);
         const newFood = new Refrigerator({ name, owner, expireDate, storeDate, category, location, memo })
-        newFood.save();
+        await newFood.save();
 
         const foods = await Refrigerator.find();
         const addedFoods = getResponseListData(foods);
